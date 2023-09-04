@@ -43,27 +43,26 @@ function App() {
 
   // Handle user registration
   const handleRegistration = () => {
-    axios.post('http://localhost:8000/api/auth/users/', {
-      email: email,
-      username: username,
-      password: password,
-    })
-    .then((response) => {
-      axios.post('http://localhost:8000/api/token/login/', {
+    axios
+      .post('http://localhost:8000/api/auth/users/', {
         email: email,
+        username: username,
         password: password,
       })
-      .then((loginResponse) => {
-        setAuthToken(loginResponse.data.auth_token);
+      .then((response) => {
+        // Display a success message
+        alert('Registration successful! You can now log in.');
+  
+        // Clear input fields
+        setEmail('');
+        setUsername('');
+        setPassword('');
       })
-      .catch((loginError) => {
-        console.error('Login failed', loginError);
+      .catch((registrationError) => {
+        console.error('Registration failed', registrationError);
       });
-    })
-    .catch((registrationError) => {
-      console.error('Registration failed', registrationError);
-    });
   };
+  
 
   // Handle user login
   const handleLogin = () => {
