@@ -1,135 +1,58 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useState } from 'react';
+import Container from 'react-bootstrap/Container';
+import Navbar from 'react-bootstrap/Navbar';
+import Button from 'react-bootstrap/Button';
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
+import Registration from './components/Registration';
+import Login from './components/Login';
 
 function App() {
-  const [userData, setUserData] = useState(null);
   const [authToken, setAuthToken] = useState(null);
-  const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [registrationToggle, setRegistrationToggle] = useState(false);
 
-  useEffect(() => {
-    // Function to retrieve the authentication token from local storage
-    const getAuthToken = () => {
-      return localStorage.getItem('authToken'); // Replace with your actual storage mechanism
-    };
-
-    // Check if a token exists
-    const authTokenExists = getAuthToken();
-
-    if (authTokenExists) {
-      // If a token exists, set it in state
-      setAuthToken(authTokenExists);
-    }
-  }, []);
-
-  useEffect(() => {
-    // If authToken exists, make an authenticated request
-    if (authToken) {
-      axios.get('http://localhost:8000/api/users/me/', {
-        headers: {
-          Authorization: `Token ${authToken}`,
-        },
-      })
-      .then((response) => {
-        setUserData(response.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-    }
-  }, [authToken]);
-
-  // Handle user registration
-  const handleRegistration = () => {
-    axios
-      .post('http://localhost:8000/api/auth/users/', {
-        email: email,
-        username: username,
-        password: password,
-      })
-      .then((response) => {
-        // Display a success message
-        alert('Registration successful! You can now log in.');
-  
-        // Clear input fields
-        setEmail('');
-        setUsername('');
-        setPassword('');
-      })
-      .catch((registrationError) => {
-        console.error('Registration failed', registrationError);
-      });
-  };
-  
-
-  // Handle user login
-  const handleLogin = () => {
-    axios.post('http://localhost:8000/api/token/login/', {
-      username: username,
-      password: password,
-    })
-    .then((response) => {
-      setAuthToken(response.data.auth_token);
-    })
-    .catch((error) => {
-      console.error('Login failed', error);
-    });
+  const handleLogin = (token) => {
+    setAuthToken(token);
   };
 
-  // Handle user logout
   const handleLogout = () => {
-    axios.post('http://localhost:8000/api/token/logout/', null, {
-      headers: {
-        Authorization: `Token ${authToken}`,
-      },
-    })
-    .then(() => {
-      setAuthToken(null);
-    })
-    .catch((error) => {
-      console.error('Logout failed', error);
-    });
-  };
-
-  const updateFormBtn = () => {
-    setRegistrationToggle(!registrationToggle);
+    setAuthToken(null);
   };
 
   return (
-    <div className="App">
-      <h1>User Authentication</h1>
-      {authToken ? (
-        <div>
-          <p>Logged in as {userData ? userData.username : 'Loading...'}</p>
-          <button onClick={handleLogout}>Logout</button>
-          {/* Include other authenticated content */}
-        </div>
-      ) : (
-        <div>
-          {registrationToggle ? (
-            <div>
-              <p>Register</p>
-              <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-              <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-              <button onClick={handleRegistration}>Register</button>
-              <p>Already have an account? <span onClick={updateFormBtn}>Login</span></p>
-            </div>
-          ) : (
-            <div>
-              <p>Login</p>
-              <input type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
-<input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-<button onClick={handleLogin}>Login</button>
-
-              <p>Don't have an account? <span onClick={updateFormBtn}>Register</span></p>
-            </div>
-          )}
-        </div>
-      )}
-    </div>
+    <Router>
+      <div className="App">
+        <Navbar bg="dark" variant="dark">
+          <Container>
+            <Navbar.Brand>Authentication App</Navbar.Brand>
+            <Navbar.Toggle />
+            <Navbar.Collapse className="justify-content-end">
+              <Navbar.Text>
+                {authToken ? (
+                  <Button onClick={handleLogout} variant="light">Logout</Button>
+                ) : null}
+              </Navbar.Text>
+            </Navbar.Collapse>
+          </Container>
+        </Navbar>
+        <Container>
+          <Switch>
+            <Route path="/registration" render={() => <Registration onRegistration={() => {}} />} />
+            <Route path="/login">
+              {authToken ? <Redirect to="/" /> : <Login onLogin={handleLogin} />}
+            </Route>
+            <Route path="/">
+              {authToken ? (
+                <div>
+                  <p>Logged in as {authToken}</p>
+                  {/* Include other authenticated content */}
+                </div>
+              ) : (
+                <Redirect to="/login" />
+              )}
+            </Route>
+          </Switch>
+        </Container>
+      </div>
+    </Router>
   );
 }
 
