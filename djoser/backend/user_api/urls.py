@@ -1,7 +1,16 @@
 from django.urls import path
 from djoser.views import TokenCreateView, TokenDestroyView, UserViewSet
 
+from .views import CustomerRecordView, AddRecordView, UpdateRecordView, DeleteRecordView
+
+
+
 urlpatterns = [
+     path('records/<int:pk>/', CustomerRecordView.as_view(), name='record-list'),
+    path('records/add/', AddRecordView.as_view(), name='record-add'),
+    path('records/update/<int:pk>/', UpdateRecordView.as_view(), name='record-update'),
+    path('records/delete/<int:pk>/', DeleteRecordView.as_view(), name='record-delete'),
+
     # Map Djoser's authentication endpoints to views
     path('users/', UserViewSet.as_view({'get': 'list', 'post': 'create'}), name='user-list'),
     path('users/me/', UserViewSet.as_view({'get': 'me'}), name='user-me'),
