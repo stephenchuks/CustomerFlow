@@ -3,6 +3,12 @@ from rest_framework.response import Response
 from .models import Record
 from .serializers import RecordSerializer
 
+
+
+class AllRecordsView(generics.ListAPIView):
+    queryset = Record.objects.all()
+    serializer_class = RecordSerializer
+
 class CustomerRecordView(generics.RetrieveAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer

@@ -5,9 +5,11 @@ import Button from 'react-bootstrap/Button';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Registration from './components/Registration';
 import Login from './components/Login';
+import CustomerRecords from './components/CustomerRecords'; // Import the component for displaying customer records
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
+  const [isRegistered, setIsRegistered] = useState(false); // New state for tracking registration
 
   const handleLogin = (token) => {
     setAuthToken(token);
@@ -15,6 +17,10 @@ function App() {
 
   const handleLogout = () => {
     setAuthToken(null);
+  };
+
+  const handleRegistration = () => {
+    setIsRegistered(true); // Update registration status
   };
 
   return (
@@ -35,20 +41,22 @@ function App() {
         </Navbar>
         <Container>
           <Switch>
-            <Route path="/registration" render={() => <Registration onRegistration={() => {}} />} />
-            <Route path="/login">
-              {authToken ? <Redirect to="/" /> : <Login onLogin={handleLogin} />}
+            <Route path="/registration">
+              {isRegistered ? <Redirect to="/login" /> : <Registration onRegistration={handleRegistration} />}
             </Route>
-            <Route path="/">
+            <Route path="/login">
+              {authToken ? <Redirect to="/records" /> : <Login onLogin={handleLogin} />}
+            </Route>
+            <Route path="/records">
               {authToken ? (
                 <div>
-                  <p>Logged in as {authToken}</p>
-                  {/* Include other authenticated content */}
+                  <CustomerRecords /> {/* Display customer records when logged in */}
                 </div>
               ) : (
                 <Redirect to="/login" />
               )}
             </Route>
+            <Redirect from="/" to="/login" />
           </Switch>
         </Container>
       </div>
