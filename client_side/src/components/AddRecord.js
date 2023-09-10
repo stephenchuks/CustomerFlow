@@ -13,7 +13,6 @@ function AddRecord() {
     city: '',
     state: '',
     zipcode: '',
-
     // Add other fields here
   });
 
@@ -23,14 +22,23 @@ function AddRecord() {
   };
 
   const handleAddRecord = () => {
-    axios.post('http://localhost:8000/api/records/', recordData)
-      .then((response) => {
-        // Handle success, e.g., show a success message
-        console.log('Record added successfully', response.data);
-      })
-      .catch((error) => {
-        console.error('Error adding record', error);
-      });
+    // Retrieve the JWT token from localStorage
+    const authToken = localStorage.getItem('authToken');
+
+    // Make the API request with the token in the headers
+    axios.post('http://localhost:8000/api/records/add/', recordData, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    })
+    .then((response) => {
+      // Handle success, e.g., show a success message
+      console.log('Record added successfully', response.data);
+    })
+    .catch((error) => {
+      // Handle errors, including 401 Unauthorized
+      console.error('Error adding record', error);
+    });
   };
 
   return (
@@ -46,7 +54,79 @@ function AddRecord() {
             onChange={handleInputChange}
           />
         </Form.Group>
-        {/* Add more form fields for other record attributes */}
+
+        <Form.Group controlId="formBasicLastName">
+          <Form.Label>Last Name</Form.Label>
+          <Form.Control
+            type="text"
+            name="last_name"
+            value={recordData.last_name}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicEmail">
+          <Form.Label>Email</Form.Label>
+          <Form.Control
+            type="email"
+            name="email"
+            value={recordData.email}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicPhone">
+          <Form.Label>Phone</Form.Label>
+          <Form.Control
+            type="text"
+            name="phone"
+            value={recordData.phone}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicAddress">
+          <Form.Label>Address</Form.Label>
+          <Form.Control
+            type="text"
+            name="address"
+            value={recordData.address}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicCity">
+          <Form.Label>City</Form.Label>
+          <Form.Control
+            type="text"
+            name="city"
+            value={recordData.city}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicState">
+          <Form.Label>State</Form.Label>
+          <Form.Control
+            type="text"
+            name="state"
+            value={recordData.state}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        <Form.Group controlId="formBasicZipcode">
+          <Form.Label>Zipcode</Form.Label>
+          <Form.Control
+            type="text"
+            name="zipcode"
+            value={recordData.zipcode}
+            onChange={handleInputChange}
+          />
+        </Form.Group>
+
+        {/* Add more form fields for other record attributes here */}
+        
         <Button variant="primary" onClick={handleAddRecord}>
           Add Record
         </Button>

@@ -5,11 +5,13 @@ import Button from 'react-bootstrap/Button';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import Registration from './components/Registration';
 import Login from './components/Login';
-import CustomerRecords from './components/CustomerRecords'; // Import the component for displaying customer records
+import Homepage from './components/Homepage';
+import AddRecord from './components/AddRecord'; // Import the AddRecord component
+import CustomerRecords from './components/CustomerRecords';
 
 function App() {
   const [authToken, setAuthToken] = useState(null);
-  const [isRegistered, setIsRegistered] = useState(false); // New state for tracking registration
+  const [isRegistered, setIsRegistered] = useState(false);
 
   const handleLogin = (token) => {
     setAuthToken(token);
@@ -20,7 +22,7 @@ function App() {
   };
 
   const handleRegistration = () => {
-    setIsRegistered(true); // Update registration status
+    setIsRegistered(true);
   };
 
   return (
@@ -50,12 +52,22 @@ function App() {
             <Route path="/records">
               {authToken ? (
                 <div>
-                  <CustomerRecords /> {/* Display customer records when logged in */}
+                  <Homepage />
                 </div>
               ) : (
                 <Redirect to="/login" />
               )}
             </Route>
+            <Route path="/add-record">
+              {authToken ? (
+                <div>
+                  <AddRecord />
+                </div>
+              ) : (
+                <Redirect to="/login" />
+              )}
+            </Route>
+            <Route path="/customer-record/:recordId" component={CustomerRecords} />
             <Redirect from="/" to="/login" />
           </Switch>
         </Container>

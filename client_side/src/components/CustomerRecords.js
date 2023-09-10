@@ -1,54 +1,36 @@
+// CustomerRecords.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import Table from 'react-bootstrap/Table';
+import { useParams } from 'react-router-dom';
+import Button from 'react-bootstrap/Button';
 
 function CustomerRecords() {
-  const [records, setRecords] = useState([]);
+  const [record, setRecord] = useState({});
+  const { id } = useParams();
 
   useEffect(() => {
-    // Fetch customer records from your Django API when the component mounts
-    axios.get('http://localhost:8000/api/allrecords/')
+    // Fetch the specific customer record from the correct API endpoint
+    axios.get(`http://localhost:8000/api/records/${id}/`)
       .then((response) => {
-        setRecords(response.data);
+        setRecord(response.data);
       })
       .catch((error) => {
-        console.error('Error fetching records', error);
+        console.error('Error fetching record', error);
       });
-  }, []);
+  }, [id]);
 
   return (
     <div>
-      <h2>Customer Records</h2>
-      <Table striped bordered hover>
-        <thead>
-          <tr>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Address</th>
-            <th>City</th>
-            <th>State</th>
-            <th>Zipcode</th>
-            {/* Add more table headers for other fields */}
-          </tr>
-        </thead>
-        <tbody>
-          {records.map((record) => (
-            <tr key={record.id}>
-              <td>{record.first_name}</td>
-              <td>{record.last_name}</td>
-              <td>{record.email}</td>
-              <td>{record.phone}</td>
-              <td>{record.address}</td>
-              <td>{record.city}</td>
-              <td>{record.state}</td>
-              <td>{record.zipcode}</td>
-              {/* Render other record fields here */}
-            </tr>
-          ))}
-        </tbody>
-      </Table>
+      <h2>Customer Record</h2>
+      <p>First Name: {record.first_name}</p>
+      <p>Last Name: {record.last_name}</p>
+      <p>Email: {record.email}</p>
+      <p>Phone: {record.phone}</p>
+      <p>Address: {record.address}</p>
+      <p>City: {record.city}</p>
+      {/* Render other record fields here */}
+      <Button variant="primary">Update Record</Button>
+      <Button variant="danger">Delete Record</Button>
     </div>
   );
 }
