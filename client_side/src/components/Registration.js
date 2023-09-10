@@ -45,18 +45,21 @@ function Registration({ onRegistration }) {
     <div>
       <h2>Register</h2>
       <Form>
-        <Form.Group controlId="formBasicEmail">
+      <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Email address</Form.Label>
           <Form.Control type="email" placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
         </Form.Group>
-        <Form.Group controlId="formBasicUsername">
+
+        <Form.Group className="mb-3" controlId="formBasicUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control type="text" placeholder="Username" value={username} onChange={(e) => setUsername(e.target.value)} />
         </Form.Group>
-        <Form.Group controlId="formBasicPassword">
+
+        <Form.Group className="mb-3" controlId="formBasicPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </Form.Group>
+        
         <Button variant="primary" onClick={handleRegistration}>
           Register
         </Button>

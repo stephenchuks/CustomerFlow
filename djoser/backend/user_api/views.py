@@ -12,7 +12,7 @@ class AllRecordsView(generics.ListAPIView):
 class CustomerRecordView(generics.RetrieveAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def retrieve(self, request, *args, **kwargs):
         # Retrieve the customer record by primary key
@@ -23,7 +23,7 @@ class CustomerRecordView(generics.RetrieveAPIView):
 class DeleteRecordView(generics.DestroyAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
     def destroy(self, request, *args, **kwargs):
         # Delete the customer record by primary key
