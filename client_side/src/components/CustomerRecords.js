@@ -6,18 +6,18 @@ import Button from 'react-bootstrap/Button';
 
 function CustomerRecords() {
   const [record, setRecord] = useState({});
-  const { id } = useParams();
+  const { recordId } = useParams(); // Change `id` to `recordId`
 
   useEffect(() => {
     // Fetch the specific customer record from the correct API endpoint
-    axios.get(`http://localhost:8000/api/records/${id}/`)
+    axios.get(`http://localhost:8000/api/records/${recordId}/`) // Change `id` to `recordId`
       .then((response) => {
         setRecord(response.data);
       })
       .catch((error) => {
         console.error('Error fetching record', error);
       });
-  }, [id]);
+  }, [recordId]); // Change `id` to `recordId`
 
   return (
     <div>
