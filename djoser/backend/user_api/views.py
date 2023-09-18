@@ -34,10 +34,10 @@ class DeleteRecordView(generics.DestroyAPIView):
 class AddRecordView(generics.CreateAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
 class UpdateRecordView(generics.UpdateAPIView):
     queryset = Record.objects.all()
     serializer_class = RecordSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    #permission_classes = [permissions.IsAuthenticated]
 
