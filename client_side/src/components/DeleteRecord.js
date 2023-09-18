@@ -8,7 +8,7 @@ function DeleteRecord({ match }) {
 
   useEffect(() => {
     // Send a DELETE request to delete the record based on the route parameter
-    axios.delete(`http://localhost:8000/api/records/delete${match.params.id}`)
+    axios.delete(`http://localhost:8000/api/records/delete/${match.params.recordId}/`)
       .then(() => {
         // Handle success, e.g., show a success message
         console.log('Record deleted successfully');

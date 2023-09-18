@@ -28,6 +28,9 @@ function CustomerRecords() {
       <p>Address: {record.address}</p>
       <p>City: {record.city}</p>
       <p>State: {record.state}</p>
+      <p>Zipcode: {record.zipcode}</p>
+      
+      
       {/* Render other record fields here */}
       <Link to={`/update-record/${recordId}`}> {/* Navigate to the update page */}
         <Button variant="primary">Update Record</Button>
