@@ -1,7 +1,6 @@
-// CustomerRecords.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom'; // Import Link from 'react-router-dom'
 import Button from 'react-bootstrap/Button';
 
 function CustomerRecords() {
@@ -10,14 +9,14 @@ function CustomerRecords() {
 
   useEffect(() => {
     // Fetch the specific customer record from the correct API endpoint
-    axios.get(`http://localhost:8000/api/records/${recordId}/`) // Change `id` to `recordId`
+    axios.get(`http://localhost:8000/api/records/${recordId}/`)
       .then((response) => {
         setRecord(response.data);
       })
       .catch((error) => {
         console.error('Error fetching record', error);
       });
-  }, [recordId]); // Change `id` to `recordId`
+  }, [recordId]);
 
   return (
     <div>
@@ -29,10 +28,13 @@ function CustomerRecords() {
       <p>Address: {record.address}</p>
       <p>City: {record.city}</p>
       <p>State: {record.state}</p>
-      <p>Zipcode: {record.zipcode}</p>
       {/* Render other record fields here */}
-      <Button variant="primary">Update Record</Button>
-      <Button variant="danger">Delete Record</Button>
+      <Link to={`/update-record/${recordId}`}> {/* Navigate to the update page */}
+        <Button variant="primary">Update Record</Button>
+      </Link>
+      <Link to={`/delete-record/${recordId}`}> {/* Navigate to the delete page */}
+        <Button variant="danger">Delete Record</Button>
+      </Link>
     </div>
   );
 }

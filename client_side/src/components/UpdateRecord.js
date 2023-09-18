@@ -19,7 +19,7 @@ function UpdateRecord({ match }) {
 
   useEffect(() => {
     // Fetch the existing record data from your Django API based on the route parameter
-    axios.get(`http://localhost:8000/api/records/${match.params.id}`)
+    axios.get(`http://localhost:8000/api/records/update/${match.params.id}`)
       .then((response) => {
         setRecordData(response.data);
       })
@@ -34,7 +34,7 @@ function UpdateRecord({ match }) {
   };
 
   const handleUpdateRecord = () => {
-    axios.put(`http://localhost:8000/api/records/${match.params.id}`, recordData)
+    axios.put(`http://localhost:8000/api/records/update/${match.params.id}`, recordData)
       .then((response) => {
         // Handle success, e.g., show a success message
         console.log('Record updated successfully', response.data);
